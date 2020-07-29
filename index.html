@@ -11,6 +11,7 @@
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
         integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
         crossorigin=""></script>
+    <script src="https://unpkg.com/@joergdietrich/leaflet.terminator"></script>
     <style>
         #mapid {
             height: 400px;
@@ -19,7 +20,7 @@
 </head>
 
 <body>
-    <h1>Hello World</h1>
+    <h1>Hello World 2</h1>
     <div id="mapid"></div>
 
     <script>
@@ -32,6 +33,7 @@
             zoomOffset: -1,
             accessToken: 'pk.eyJ1IjoiYWRhbWp3c3VjaCIsImEiOiJja2N4NHBxaTEwa2hiMzRtb2MxbHplZW5zIn0.4bpealT6Ndw7aWDBY70Zxw'
         }).addTo(mymap);
+        var terminator = L.terminator().addTo(mymap);
     </script>
 </body>
 
