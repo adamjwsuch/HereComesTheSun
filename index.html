@@ -20,20 +20,48 @@
 </head>
 
 <body>
-    <h1>Hello World 2</h1>
+    <h1>Satellite location</h1>
+    <span id = "latitude">Wait for latitude</span>
+    <br/>
+    <span id = "longitude">Wait for longitude</span>
+    <br/>
     <div id="mapid"></div>
 
     <script>
-        var mymap = L.map('mapid').setView([51.505, -0.09], 13);
-        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-            maxZoom: 18,
-            id: 'mapbox/streets-v11',
-            tileSize: 512,
-            zoomOffset: -1,
-            accessToken: 'pk.eyJ1IjoiYWRhbWp3c3VjaCIsImEiOiJja2N4NHBxaTEwa2hiMzRtb2MxbHplZW5zIn0.4bpealT6Ndw7aWDBY70Zxw'
-        }).addTo(mymap);
-        var terminator = L.terminator().addTo(mymap);
+        var mymap;
+        initializeMap();
+        getAndDrawSat();
+        async function getAndDrawSat(){
+            let issLocation = await getISSLocation();
+            drawSatellite(issLocation)
+        }
+        function drawSatellite(location){
+            let marker = L.marker([location.latitude, location.longitude]).addTo(mymap);
+        }
+        async function getISSLocation(){
+            let url = "https://api.wheretheiss.at/v1/satellites/25544";
+            let response = await fetch(url);
+            let location = await response.json();
+            //Descructuring
+            const {latitude, longitude} = location;
+            //Echo them to screen
+            document.getElementById("latitude").textContent = "Latitude: " + latitude;
+            document.getElementById("longitude").textContent = "Longitude: " + longitude;
+            //Return the whole object
+            return location;
+        }
+        function initializeMap(){
+            mymap = L.map('mapid').setView([51.505, -0.09], 1);
+            L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                maxZoom: 18,
+                id: 'mapbox/streets-v11',
+                tileSize: 512,
+                zoomOffset: -1,
+                accessToken: 'pk.eyJ1IjoiYWRhbWp3c3VjaCIsImEiOiJja2N4NHBxaTEwa2hiMzRtb2MxbHplZW5zIn0.4bpealT6Ndw7aWDBY70Zxw'
+            }).addTo(mymap);
+            var terminator = L.terminator().addTo(mymap);
+        }
     </script>
 </body>
 
